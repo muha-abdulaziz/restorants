@@ -21,11 +21,6 @@ The Restaurant Delivery System connects customers with restaurants, allowing use
 
 > ⚠️ **Note:** Payment processing, messaging, and notification services are **not included** in the current scope.
 
----
-
-You can mention the ERD (Entity-Relationship Diagram) PNG image in your `README.md` file like this:
-
----
 
 ### 📊 ERD Diagram
 
