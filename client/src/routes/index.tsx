@@ -4,6 +4,8 @@ import RegisterPage from "../pages/auth/register";
 import { Home } from "../pages/home/Home";
 
 import { PublicRouter } from "./public";
+import RestaurantRequestForm from "../pages/restaurantRequestForm";
+import DeliveryRequestForm from "../pages/deliveryRequestForm";
 
 export const appRoutes = createBrowserRouter([
   // {
@@ -14,6 +16,22 @@ export const appRoutes = createBrowserRouter([
     path: "/",
     element: <Home />,
     children: [
+      {
+        path: "restaurant-contract",
+        element: (
+          <PublicRouter>
+            <RestaurantRequestForm />
+          </PublicRouter>
+        ),
+      },
+      {
+        path: "delivery-contract",
+        element: (
+          <PublicRouter>
+            <DeliveryRequestForm />
+          </PublicRouter>
+        ),
+      },
       {
         path: "login",
         element: (

@@ -17,7 +17,20 @@ export class RequestDelivery {
   username: string;
 
   @Column()
+  email: string;
+
+  @Column()
+  licensePlate: string;
+  @Column()
+  vehicleType: string;
+  @Column({ unique: true })
+  drivingLicense: string;
+
+  @Column({ default: 'PENDING' })
   status: string;
+
+  @Column()
+  adminComment: string;
 
   @CreateDateColumn()
   createdAt: string;

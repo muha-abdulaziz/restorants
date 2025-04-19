@@ -12,7 +12,7 @@ import { Restaurant } from './restaurant.entity';
 export class RequestRestaurant {
   @PrimaryGeneratedColumn()
   id: number;
-  @Column()
+  @Column({ unique: true })
   restaurantName: string;
   @Column()
   location: string;
@@ -23,8 +23,11 @@ export class RequestRestaurant {
   @Column()
   email: string;
 
-  @Column()
+  @Column({ default: 'PENDING' })
   status: string;
+
+  @Column()
+  adminComment: string;
 
   @OneToOne(() => Restaurant)
   restuarant: Restaurant;
