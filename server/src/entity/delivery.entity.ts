@@ -1,4 +1,10 @@
-import { Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { RequestDelivery } from './requestDelivery.entity';
 import { User } from './user.entity';
 
@@ -10,6 +16,13 @@ export class Delivery {
   @OneToOne(() => RequestDelivery)
   @JoinColumn()
   request: RequestDelivery;
+
+  @Column()
+  licensePlate: string;
+  @Column()
+  vehicleType: string;
+  @Column({ unique: true })
+  drivingLicense: string;
 
   @OneToOne(() => User, (user) => user.delivery)
   @JoinColumn()

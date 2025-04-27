@@ -3,6 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { RequestModule } from 'src/request/request.module';
+import { RestaurantModule } from './restaurant/restaurant.module';
+import { OwnerRestaurantModule } from './owner-restaurant/owner-restaurant.module';
+import { DeliveryModule } from './delivery/delivery.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -25,6 +30,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         synchronize: true,
       }),
     }),
+    RequestModule,
+    RestaurantModule,
+    OwnerRestaurantModule,
+    DeliveryModule,
+    UserModule
   ],
   controllers: [AppController],
   providers: [AppService],

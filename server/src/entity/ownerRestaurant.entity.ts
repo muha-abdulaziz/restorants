@@ -1,6 +1,7 @@
 import { Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { RequestRestaurant } from './requestRestaurant.entity';
 import { Restaurant } from './restaurant.entity';
+import { User } from './user.entity';
 
 @Entity()
 export class OwnerRestaurant {
@@ -13,4 +14,8 @@ export class OwnerRestaurant {
 
   @OneToOne(() => Restaurant)
   restaurant: Restaurant;
+
+  @OneToOne(()=>User)
+  @JoinColumn()
+  user:User
 }
