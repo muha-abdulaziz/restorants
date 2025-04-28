@@ -8,6 +8,7 @@ import { RestaurantModule } from './restaurant/restaurant.module';
 import { OwnerRestaurantModule } from './owner-restaurant/owner-restaurant.module';
 import { DeliveryModule } from './delivery/delivery.module';
 import { UserModule } from './user/user.module';
+import { MenuModule } from './menu/menu.module';
 
 @Module({
   imports: [
@@ -34,7 +35,8 @@ import { UserModule } from './user/user.module';
     RestaurantModule,
     OwnerRestaurantModule,
     DeliveryModule,
-    UserModule
+    UserModule,
+    MenuModule
   ],
   controllers: [AppController],
   providers: [AppService],
