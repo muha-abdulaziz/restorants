@@ -7,7 +7,6 @@ import { MenuService } from './menu.service';
 import { MealService } from './meal.service';
 import { Menu } from 'src/entity/menu.entity';
 import { Meal } from 'src/entity/meal.entity';
-import { MealController } from './meal.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Restaurant, Menu, Meal])],
