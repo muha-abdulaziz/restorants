@@ -2,10 +2,12 @@ import {
   Column,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { OwnerRestaurant } from './ownerRestaurant.entity';
+import { Menu } from './menu.entity';
 
 @Entity()
 export class Restaurant {
@@ -21,4 +23,7 @@ export class Restaurant {
   @OneToOne(() => OwnerRestaurant)
   @JoinColumn()
   owner: OwnerRestaurant;
+
+  @OneToMany(() => Restaurant, (resturant) => resturant.menus)
+  menus: Menu;
 }

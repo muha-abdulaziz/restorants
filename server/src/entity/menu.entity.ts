@@ -32,9 +32,11 @@ export class Menu {
   @IsBoolean()
   isActive: boolean;
 
-  @ManyToOne(() => Restaurant)
+  @ManyToOne(() => Restaurant, (restaurant) => restaurant.menus, {
+    nullable: false,
+  })
   restaurant: Restaurant;
 
-  @OneToMany(() => Meal, meal => meal.menu)
+  @OneToMany(() => Meal, (meal) => meal.menu)
   meals: Meal[];
 }

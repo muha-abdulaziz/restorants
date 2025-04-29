@@ -33,16 +33,15 @@ export class MealService {
     return await this.mealRepository.save(meal);
   }
 
-  async findAll(): Promise<Meal[]> {
+  async findAll(restaurantId: number): Promise<Meal[]> {
     return await this.mealRepository.find({
-      relations: ['menu', 'order', 'cart'],
+      where: { menu: { restaurant: { id: restaurantId } } },
     });
   }
 
   async findOne(id: number): Promise<Meal> {
     const meal = await this.mealRepository.findOne({
       where: { id },
-      relations: ['menu', 'order', 'cart'],
     });
     if (!meal) {
       throw new NotFoundException(`Meal with ID ${id} not found`);
@@ -78,7 +77,6 @@ export class MealService {
   async findByMenu(menuId: number): Promise<Meal[]> {
     return await this.mealRepository.find({
       where: { menu: { id: menuId } },
-      relations: ['menu', 'order', 'cart'],
     });
   }
 } 
