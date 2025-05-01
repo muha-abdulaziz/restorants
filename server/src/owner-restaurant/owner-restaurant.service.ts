@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OwnerRestaurant } from 'src/entity/ownerRestaurant.entity';
 import { RestaurantService } from 'src/restaurant/restaurant.service';
+import { UserRole } from 'src/user/user-role.enum';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 
@@ -19,7 +20,12 @@ export class OwnerRestaurantService {
     const { id, restaurantName, location, username, password, email } =
       requestRestaurant;
 
-    const user = await this.userService.add({ username, password, email });
+    const user = await this.userService.add({
+      username,
+      password,
+      email,
+      role: UserRole.RESTAURANT_OWNER,
+    });
 
     const owner = await this.OwnerRestaurantRepo.insert({
       request: id,
@@ -27,7 +33,7 @@ export class OwnerRestaurantService {
     });
 
     return this.restaurantService.create({
-      name:restaurantName,
+      name: restaurantName,
       location,
       owner: owner.identifiers[0],
     });

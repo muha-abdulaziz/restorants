@@ -3,9 +3,9 @@ import { RequestRestaurant } from 'src/entity/requestRestaurant.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { RequestDelivery } from 'src/entity/requestDelivery.entity';
-import { AuthService } from 'src/Auth/auth.service';
 import { DeliveryService } from 'src/delivery/delivery.service';
 import { OwnerRestaurantService } from 'src/owner-restaurant/owner-restaurant.service';
+import { SecurityUtilsService } from 'src/SecurityUtils/security-utils.service';
 
 @Injectable()
 export class RequestService {
@@ -14,7 +14,7 @@ export class RequestService {
     private RequestRestaurantRepository: Repository<RequestRestaurant>,
     @InjectRepository(RequestDelivery)
     private RequestDeliveryRepository: Repository<RequestDelivery>,
-    private readonly authService: AuthService,
+    private readonly securityUtilsService: SecurityUtilsService,
     private readonly deliveryService: DeliveryService,
     private readonly ownerRestaurantService: OwnerRestaurantService,
   ) {}
@@ -46,7 +46,8 @@ export class RequestService {
       );
     }
 
-    const hashedPassword = await this.authService.hashPassword(password);
+    const hashedPassword =
+      await this.securityUtilsService.hashPassword(password);
 
     await this.RequestRestaurantRepository.insert({
       password: hashedPassword,
@@ -88,7 +89,8 @@ export class RequestService {
       );
     }
 
-    const hashedPassword = await this.authService.hashPassword(password);
+    const hashedPassword =
+      await this.securityUtilsService.hashPassword(password);
 
     await this.RequestDeliveryRepository.insert({
       password: hashedPassword,
@@ -127,8 +129,6 @@ export class RequestService {
 
   async changeStatusForDeilvery(requestId: number, updateRequestDto: any) {
     const { status, adminComment } = updateRequestDto;
-
-
 
     if (status !== 'ACCEPTED' && status !== 'REJECTED') {
       throw new HttpException(

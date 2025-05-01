@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Delivery } from 'src/entity/delivery.entity';
+import { UserRole } from 'src/user/user-role.enum';
 import { UserService } from 'src/user/user.service';
 import { Repository } from 'typeorm';
 
@@ -23,7 +24,12 @@ export class DeliveryService {
       drivingLicense,
     } = requestDelivery;
 
-    const user = await this.userService.add({ username, email, password });
+    const user = await this.userService.add({
+      username,
+      email,
+      password,
+      role: UserRole.DELIVERY,
+    });
     await this.DeliveryRepository.insert({
       user: user.identifiers[0],
       licensePlate,

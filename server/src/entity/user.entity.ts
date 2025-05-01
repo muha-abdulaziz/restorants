@@ -1,12 +1,8 @@
-import {
-  Column,
-  Entity,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Customer } from './customer.entity';
 import { Delivery } from './delivery.entity';
 import { Admin } from './admin.entity';
+import { UserRole } from 'src/user/user-role.enum';
 
 @Entity()
 export class User {
@@ -21,6 +17,12 @@ export class User {
 
   @Column()
   password: string;
+
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+  })
+  role: UserRole;
 
   @OneToOne(() => Customer)
   customer: Customer;
