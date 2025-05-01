@@ -7,6 +7,8 @@ import { PublicRouter } from "./public";
 import RestaurantRequestForm from "../pages/restaurantRequestForm";
 import DeliveryRequestForm from "../pages/deliveryRequestForm";
 import AdminRequestsPage from "../pages/adminRequestsPage";
+import OrdersQueueDeliveryPerson from "../pages/orderDeliveryPerson";
+import ShipmentsTable from "../pages/shipmentTable";
 
 export const appRoutes = createBrowserRouter([
   // {
@@ -30,6 +32,22 @@ export const appRoutes = createBrowserRouter([
         element: (
           <PublicRouter>
             <RestaurantRequestForm />
+          </PublicRouter>
+        ),
+      },
+      {
+        path: "order-queue",
+        element: (
+          <PublicRouter>
+            <OrdersQueueDeliveryPerson />
+          </PublicRouter>
+        ),
+      },
+      {
+        path: "shipment",
+        element: (
+          <PublicRouter>
+            <ShipmentsTable />
           </PublicRouter>
         ),
       },
