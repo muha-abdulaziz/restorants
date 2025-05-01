@@ -12,5 +12,7 @@ export class RestaurantService {
       return await this.restaurantRepo.insert(restaurant)
     }
 
-
+    async findAll(): Promise<Restaurant[]> {
+      return await this.restaurantRepo.find();
+    }
 }

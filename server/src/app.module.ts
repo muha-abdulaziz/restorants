@@ -8,7 +8,6 @@ import { RestaurantModule } from './restaurant/restaurant.module';
 import { OwnerRestaurantModule } from './owner-restaurant/owner-restaurant.module';
 import { DeliveryModule } from './delivery/delivery.module';
 import { UserModule } from './user/user.module';
-
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -34,7 +33,7 @@ import { UserModule } from './user/user.module';
     RestaurantModule,
     OwnerRestaurantModule,
     DeliveryModule,
-    UserModule
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
