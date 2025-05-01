@@ -103,9 +103,6 @@ export class RequestService {
 
   async changeStatusForRestuarant(requestId: number, updateRequestDto: any) {
     const { status, adminComment } = updateRequestDto;
-    console.log(updateRequestDto)
-    
-    console.log(status !== 'ACCEPTED' && status !== 'REJECTED')
 
     if (status !== 'ACCEPTED' && status !== 'REJECTED') {
       throw new HttpException(
@@ -131,7 +128,9 @@ export class RequestService {
   async changeStatusForDeilvery(requestId: number, updateRequestDto: any) {
     const { status, adminComment } = updateRequestDto;
 
-    if (status !== 'ACCEPTED' || status !== 'REJECTED') {
+
+
+    if (status !== 'ACCEPTED' && status !== 'REJECTED') {
       throw new HttpException(
         'Failed to process the request : Undefined status',
         HttpStatus.BAD_REQUEST,

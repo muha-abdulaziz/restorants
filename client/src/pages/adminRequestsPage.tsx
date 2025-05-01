@@ -137,20 +137,28 @@ const AdminRequestsPage: React.FC = () => {
       title: "Actions",
       render: (_, record) => (
         <div className="flex gap-2">
-          <Button
-            type="primary"
-            onClick={() => handleAccept("restaurant", record)}
-          >
-            Accept
-          </Button>
-          <Button
-            danger
-            onClick={() =>
-              openRejectModal("restaurant", record.id, record.status)
-            }
-          >
-            Reject
-          </Button>
+          {record.status === "ACCEPTED" ? (
+            <></>
+          ) : (
+            <Button
+              type="primary"
+              onClick={() => handleAccept("restaurant", record)}
+            >
+              Accept
+            </Button>
+          )}
+          {record.status === "REJECTED" ? (
+            <></>
+          ) : (
+            <Button
+              danger
+              onClick={() =>
+                openRejectModal("restaurant", record.id, record.status)
+              }
+            >
+              Reject
+            </Button>
+          )}
         </div>
       ),
     },
@@ -175,20 +183,28 @@ const AdminRequestsPage: React.FC = () => {
       title: "Actions",
       render: (_, record) => (
         <div className="flex gap-2">
-          <Button
-            type="primary"
-            onClick={() => handleAccept("delivery", record)}
-          >
-            Accept
-          </Button>
-          <Button
-            danger
-            onClick={() =>
-              openRejectModal("delivery", record.id, record.status)
-            }
-          >
-            Reject
-          </Button>
+          {record.status === "ACCEPTED" ? (
+            <></>
+          ) : (
+            <Button
+              type="primary"
+              onClick={() => handleAccept("delivery", record)}
+            >
+              Accept
+            </Button>
+          )}
+          {record.status === "REJECTED" ? (
+            <></>
+          ) : (
+            <Button
+              danger
+              onClick={() =>
+                openRejectModal("delivery", record.id, record.status)
+              }
+            >
+              Reject
+            </Button>
+          )}
         </div>
       ),
     },
