@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Table, Button, Modal, message, Spin, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
+import { getToken } from "../helpers/auth";
 
 interface RestaurantRequest {
   id: number;
@@ -47,11 +48,19 @@ const AdminRequestsPage: React.FC = () => {
   const fetchRequests = async () => {
     try {
       const [restaurantRes, deliveryRes] = await Promise.all([
-        axios.get<RestaurantRequest[]>(`${BASE_URL}/request/restaurant/all`),
-        axios.get<DeliveryRequest[]>(`${BASE_URL}/request/delivery/all`),
+        axios.get<{success:boolean , data:RestaurantRequest[]}>(`${BASE_URL}/request/restaurant/all`,{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        }),
+        axios.get<{success:boolean , data:DeliveryRequest[]}>(`${BASE_URL}/request/delivery/all`,{
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+          },
+        }),
       ]);
-      setRestaurantRequests(restaurantRes.data);
-      setDeliveryRequests(deliveryRes.data);
+      setRestaurantRequests(restaurantRes.data.data);
+      setDeliveryRequests(deliveryRes.data.data);
     } catch (error) {
       message.error("Failed to load requests");
     } finally {
@@ -69,6 +78,10 @@ const AdminRequestsPage: React.FC = () => {
       await axios.patch(`${BASE_URL}/request/${type}/admin/${id}`, {
         status,
         adminComment: comment,
+      },{
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
       });
       message.success(`Status updated to ${status}`);
       fetchRequests();

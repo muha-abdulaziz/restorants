@@ -10,6 +10,9 @@ import AdminRequestsPage from "../pages/adminRequestsPage";
 import OrdersQueueDeliveryPerson from "../pages/orderDeliveryPerson";
 import ShipmentsTable from "../pages/shipmentTable";
 import { PrivateRouter } from "./private";
+import { Unauthorized } from "../pages/unauthorizedPage";
+import { UserRole } from "../common/types/enum";
+import { UsersPage } from "../pages/userMPage";
 
 export const appRoutes = createBrowserRouter([
   // {
@@ -23,15 +26,23 @@ export const appRoutes = createBrowserRouter([
       {
         path: "requests",
         element: (
-          <PrivateRouter>
+          <PrivateRouter roles={[UserRole.ADMIN]}>
             <AdminRequestsPage />
+          </PrivateRouter>
+        ),
+      },
+      {
+        path: "users",
+        element: (
+          <PrivateRouter roles={[UserRole.ADMIN]}>
+            <UsersPage />
           </PrivateRouter>
         ),
       },
       {
         path: "shipment",
         element: (
-          <PrivateRouter>
+          <PrivateRouter roles={[UserRole.DELIVERY]}>
             <ShipmentsTable />
           </PrivateRouter>
         ),
@@ -39,12 +50,16 @@ export const appRoutes = createBrowserRouter([
       {
         path: "order-queue",
         element: (
-          <PrivateRouter>
+          <PrivateRouter roles={[UserRole.DELIVERY]}>
             <OrdersQueueDeliveryPerson />
           </PrivateRouter>
         ),
       },
       // Public routes
+      {
+        path: "error",
+        element: (<Unauthorized/>),
+      },
       {
         path: "restaurant-contract",
         element: (

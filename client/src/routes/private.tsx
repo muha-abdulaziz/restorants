@@ -1,11 +1,23 @@
 import { Navigate } from "react-router-dom";
 import { useUserAccount } from "../hooks/useAccount";
 
-export const PrivateRouter = ({ children }: { children?: any }) => {
+interface PrivateRouterWithProps {
+  children?: React.ReactNode;
+  roles?: string[];
+}
+
+export const PrivateRouter = ({ children, roles }: PrivateRouterWithProps) => {
   const { isAuthenticated } = useUserAccount();
 
-  if (isAuthenticated()) {
-    return <>{children}</>;
+  if (!isAuthenticated()) {
+    return <Navigate to={"/login"}></Navigate>;
   }
-  return <Navigate to={"/login"}></Navigate>;
+
+  const role = sessionStorage.getItem("role");
+
+  if (role && !roles?.includes(role)) {
+    return <Navigate to={"/error"}></Navigate>;
+  }
+
+  return <>{children}</>;
 };

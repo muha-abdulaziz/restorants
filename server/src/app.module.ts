@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, OnApplicationBootstrap } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -13,6 +13,8 @@ import { CustomerModule } from './customer/customer.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './SecurityUtils/jwt-auth.guard';
 import { RolesGuard } from './SecurityUtils/roles.guard';
+import { AdminModule } from './admin/admin.module';
+import { AdminService } from './admin/admin.service';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -41,6 +43,7 @@ import { RolesGuard } from './SecurityUtils/roles.guard';
     UserModule,
     AuthModule,
     CustomerModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [
@@ -56,4 +59,10 @@ import { RolesGuard } from './SecurityUtils/roles.guard';
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements OnApplicationBootstrap {
+  constructor(private Adminservice: AdminService) {}
+
+  onApplicationBootstrap() {
+    this.Adminservice.create();
+  }
+}
