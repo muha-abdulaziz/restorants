@@ -39,7 +39,9 @@ export class DeliveryService {
     });
   }
 
-  find() {
-    return this.DeliveryRepository.find();
+  findAll() {
+    return this.DeliveryRepository.createQueryBuilder('delivery')
+      .leftJoin('delivery.user', 'user')
+      .addSelect(['user.id', 'user.username', 'user.email']);
   }
 }

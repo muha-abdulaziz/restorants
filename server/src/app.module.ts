@@ -10,6 +10,9 @@ import { DeliveryModule } from './delivery/delivery.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { CustomerModule } from './customer/customer.module';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './SecurityUtils/jwt-auth.guard';
+import { RolesGuard } from './SecurityUtils/roles.guard';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -19,15 +22,15 @@ import { CustomerModule } from './customer/customer.module';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        type: "postgres",
+        type: 'postgres',
         host: configService.get<string>('DB_HOST'),
         port: configService.get<number>('DB_PORT'),
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
         entities: [__dirname + '/./entity/*.entity{.ts,.js}'],
-        logger:"simple-console",
-        logging:true,
+        logger: 'simple-console',
+        logging: true,
         synchronize: true,
       }),
     }),
@@ -40,6 +43,17 @@ import { CustomerModule } from './customer/customer.module';
     CustomerModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {}

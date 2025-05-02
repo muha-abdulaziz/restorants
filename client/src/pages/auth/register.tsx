@@ -21,9 +21,9 @@ function RegisterPage() {
 
   const { contextHolder, openNotification } = useNotificationApp();
   const { mutate } = useRegisterAccountMutation({
-    onSuccess: (data) => {
-      if (data.data.access_token) {
-        handleOnLogin(data.data);
+    onSuccess: (response) => {
+      if (response.data.data.access_token) {
+        handleOnLogin(response.data.data);
         openNotification("Successfully created a new account", "success");
       }
     },

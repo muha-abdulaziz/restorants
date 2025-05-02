@@ -6,7 +6,7 @@ export class DeliveryController {
   constructor(private readonly deliveryService: DeliveryService) {}
 
   @Get()
-  find() {
-    return this.deliveryService.find();
+  findAll() {
+    return this.deliveryService.findAll();
   }
 }

@@ -38,13 +38,13 @@ export class AuthService {
       throw new HttpException(ERROR_MESSAGE, HttpStatus.UNAUTHORIZED);
     }
 
-    const token = this.securityUtilsService.generateToken({
+    const token = await this.securityUtilsService.generateToken({
       id: user.id,
       username: user.username,
       role: user.role,
     });
 
-    return { token, role: user.role };
+    return { access_token: token, role: user.role, username: user.username };
   }
 
   // the only customer is able to register
@@ -77,12 +77,12 @@ export class AuthService {
       user: userId,
     });
 
-    const token = this.securityUtilsService.generateToken({
+    const token = await this.securityUtilsService.generateToken({
       username,
       id: customer.id,
       role: customerRole,
     });
 
-    return { token, role: customerRole };
+    return { access_token: token, role: customerRole, username };
   }
 }

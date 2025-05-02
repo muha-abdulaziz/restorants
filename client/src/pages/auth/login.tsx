@@ -20,9 +20,9 @@ function LoginPage() {
   const { handleOnLogin } = useUserAccount();
   const { contextHolder, openNotification } = useNotificationApp();
   const { mutate } = useLoginAccountMutation({
-    onSuccess: (data) => {
-      if (data.data.access_token) {
-        handleOnLogin(data.data);
+    onSuccess: (response) => {
+      if (response.data.data.access_token) {
+        handleOnLogin(response.data.data);
         openNotification("Successfully logged in ", "success");
       }
     },
