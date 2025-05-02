@@ -16,6 +16,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   // It is called automatically after the JWT is successfully decoded and verified
   // accessed by req.user
   async validate(payload: any) {
+    console.log(payload)
     return {
       userId: payload.id,
       username: payload.username,

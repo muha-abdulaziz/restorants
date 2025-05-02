@@ -11,17 +11,21 @@ import {
 import { Shipment } from './shipment.entity';
 import { Meal } from './meal.entity';
 import { Customer } from './customer.entity';
+import { OrderStatus } from 'src/order/order-status.enum-';
 
 @Entity()
 export class Order {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  status: string;
+  @Column({ type: 'enum', enum: OrderStatus, default: OrderStatus.PENDING })
+  status: OrderStatus;
 
   @CreateDateColumn()
   createdAt: string;
+
+  @Column({ default: 'Cairo' })
+  address: string;
 
   @UpdateDateColumn()
   updatedAt: string;

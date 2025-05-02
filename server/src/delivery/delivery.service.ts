@@ -44,4 +44,8 @@ export class DeliveryService {
       .leftJoin('delivery.user', 'user')
       .addSelect(['user.id', 'user.username', 'user.email']);
   }
+
+  findByUserId(id: number) {
+    return this.DeliveryRepository.findOne({ where: { user: { id: id } } });
+  }
 }

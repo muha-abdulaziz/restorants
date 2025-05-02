@@ -1,4 +1,5 @@
 import {
+  Column,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -7,6 +8,7 @@ import {
 } from 'typeorm';
 import { Order } from './order.entity';
 import { Delivery } from './delivery.entity';
+import { shipmentStatus } from 'src/shipment/shipmentStatus.enum';
 
 @Entity()
 export class Shipment {
@@ -16,6 +18,13 @@ export class Shipment {
   @OneToOne(() => Order)
   @JoinColumn()
   order: Order;
+
+  @Column({
+    type: 'enum',
+    enum: shipmentStatus,
+    default: shipmentStatus.PENDING,
+  })
+  status: shipmentStatus;
 
   @ManyToOne(() => Delivery)
   delivey: Delivery;

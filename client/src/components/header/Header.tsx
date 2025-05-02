@@ -1,5 +1,4 @@
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import style from "./style.module.css";
+import { Link, useNavigate } from "react-router-dom"
 import { PrimaryButton } from "../../themes/buttons";
 import { Menu } from "antd";
 import { useState } from "react";
@@ -46,77 +45,23 @@ export function Header() {
   };
 
   return (
-    // <div className={style.mainHeader}>
-    //   <div
-    //     style={{
-    //       backgroundColor: "orange",
-    //       fontFamily: "fantasy",
-    //     }}
-    //   >
-    //     <h1 style={{ color: "white", fontWeight: "bold" }}>
-    //       Restaurant Delivery
-    //     </h1>
-    //   </div>
-
-    //   <div className="flex justify-between" style={{ width: "40%" }}>
-    //     <Menu
-    //       onClick={handleMenuClick}
-    //       selectedKeys={[selectedKey]}
-    //       mode="horizontal"
-    //       inlineCollapsed={false}
-    //     >
-    //       {isAuthenticated() ? (
-    //         <>
-    //           <Menu.Item key="home">
-    //             <Link to="/">Home</Link>
-    //           </Menu.Item>
-
-    //           {isAdmin() && (
-    //             <Menu.Item key="users">
-    //               <Link to="/users">Users</Link>
-    //             </Menu.Item>
-    //           )}
-    //           <Menu.Item key="apartments">
-    //             <Link to="/meals">meals</Link>
-    //           </Menu.Item>
-    //         </>
-    //       ) : (
-    //         <></>
-    //       )}
-    //     </Menu>
-    //   </div>
-    //   <div style={{ width: "200px flex justify-between" }}>
-    //     <BusinessDropdown />
-    //     {isAuthenticated() ? (
-    //       <>
-    //         <UserProfileMenu />
-    //       </>
-    //     ) : (
-    //       <PrimaryButton onClick={routeToSignInPage}>Sign in</PrimaryButton>
-    //     )}
-    //   </div>
-    // </div>
     <header className="flex justify-between items-center px-6 py-4 bg-white shadow-md">
-      <div
-        style={{
-          backgroundColor: "orange",
-          fontFamily: "fantasy",
-        }}
-      >
-        <h1 style={{ color: "white", fontWeight: "bold" }}>
-          Restaurant Delivery
+      <div className="flex items-center justify-center bg-gradient-to-br from-yellow-100 to-red-100">
+        <h1 className="text-2xl font-bold text-red-600 drop-shadow-lg">
+          Restaurant <span className="text-yellow-500">Delivery</span>
         </h1>
       </div>
 
       <nav className="flex gap-4">
-        <BusinessDropdown />
-
         {isAuthenticated() ? (
           <>
             <UserProfileMenu />
           </>
         ) : (
-          <PrimaryButton onClick={routeToSignInPage}>Sign in</PrimaryButton>
+          <>
+            <BusinessDropdown />
+            <PrimaryButton onClick={routeToSignInPage}>Sign in</PrimaryButton>
+          </>
         )}
       </nav>
     </header>

@@ -15,6 +15,8 @@ import { JwtAuthGuard } from './SecurityUtils/jwt-auth.guard';
 import { RolesGuard } from './SecurityUtils/roles.guard';
 import { AdminModule } from './admin/admin.module';
 import { AdminService } from './admin/admin.service';
+import { OrderModule } from './order/order.module';
+import { ShipmentModule } from './shipment/shipment.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -44,6 +46,8 @@ import { AdminService } from './admin/admin.service';
     AuthModule,
     CustomerModule,
     AdminModule,
+    OrderModule,
+    ShipmentModule,
   ],
   controllers: [AppController],
   providers: [

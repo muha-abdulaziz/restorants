@@ -15,20 +15,22 @@ const delivery = [
 
 export function SideBar() {
   const [items, setItems] = useState<{ name: string; route: string }[]>([]);
-
+  const [name,setName] = useState('')
   useEffect(() => {
     const role = getRole();
     if (role === UserRole.ADMIN) {
       setItems(admin);
+      setName("Admin")
     } else if (role === UserRole.DELIVERY) {
       setItems(delivery);
+      setName("Delivery")
     }
   }, []);
 
   return (
     <aside className="w-64 h-full bg-white shadow-md z-10 border-r border-gray-200 flex flex-col">
-      <div className="p-6 text-2xl font-bold text-orange-600 border-b border-gray-200">
-        {getRole()?.toLowerCase()} Panel
+      <div className="p-6 text-2xl font-bold text-red-600 border-b border-gray-200">
+        {name} Panel
       </div>
       <nav className="flex-1 overflow-y-auto px-4 py-4 space-y-2">
         {items.map((ch, i) => (
