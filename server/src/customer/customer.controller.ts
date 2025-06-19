@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { CustomerService } from './customer.service';
 import { Roles } from 'src/SecurityUtils/role.decorator';
 
@@ -6,11 +14,15 @@ import { Roles } from 'src/SecurityUtils/role.decorator';
 export class CustomerController {
   constructor(private readonly customerService: CustomerService) {}
 
+  @Post('/checkout')
+  checkout(@Body() checkoutOrder: any) {
+    return this.customerService;
+  }
+
   @Post()
   create(@Body() createCustomerDto: any) {
     return this.customerService.create(createCustomerDto);
   }
-
 
   @Get()
   findAll() {

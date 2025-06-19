@@ -21,7 +21,9 @@ export class MealService {
     });
 
     if (!menu) {
-      throw new NotFoundException(`Menu with ID ${createMealDto.menuId} not found`);
+      throw new NotFoundException(
+        `Menu with ID ${createMealDto.menuId} not found`,
+      );
     }
 
     const { menuId, ...mealData } = createMealDto;
@@ -51,14 +53,16 @@ export class MealService {
 
   async update(id: number, updateMealDto: UpdateMealDto): Promise<Meal> {
     const meal = await this.findOne(id);
-    
+
     if (updateMealDto.menuId) {
       const menu = await this.menuRepository.findOne({
         where: { id: updateMealDto.menuId },
       });
 
       if (!menu) {
-        throw new NotFoundException(`Menu with ID ${updateMealDto.menuId} not found`);
+        throw new NotFoundException(
+          `Menu with ID ${updateMealDto.menuId} not found`,
+        );
       }
 
       meal.menu = menu;
@@ -79,4 +83,8 @@ export class MealService {
       where: { menu: { id: menuId } },
     });
   }
-} 
+
+  async findAllMealsForCustomer(): Promise<Meal[]> {
+    return await this.mealRepository.find();
+  }
+}

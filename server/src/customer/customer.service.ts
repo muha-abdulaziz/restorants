@@ -22,8 +22,8 @@ export class CustomerService {
       .getMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} customer`;
+  findOne(userId: number) {
+    return this.customerRepository.findOne({ where: { user: { id: userId } } });
   }
 
   update(id: number, updateCustomerDto: any) {

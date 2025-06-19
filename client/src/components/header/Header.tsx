@@ -41,13 +41,15 @@ export function Header() {
   };
 
   const routeToSignInPage = () => {
-    navigate("/register");
+    navigate("/login");
   };
 
   return (
     <header className="flex justify-between items-center px-6 py-4 bg-white shadow-md">
       <div className="flex items-center justify-center bg-gradient-to-br from-yellow-100 to-red-100">
-        <h1 className="text-2xl font-bold text-red-600 drop-shadow-lg">
+        <h1 style={{cursor:"pointer"}} className="text-2xl font-bold text-red-600 drop-shadow-lg" onClick={()=>{
+          navigate('/')
+        }}>
           Restaurant <span className="text-yellow-500">Delivery</span>
         </h1>
       </div>

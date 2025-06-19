@@ -34,4 +34,56 @@ export class OrderService {
     return 'started to ship the order';
   }
 
+  async checkout(checkoutData) {
+    const { mealsIDs, customerId, address } = checkoutData;
+
+    await this.orderRepo.insert({
+      customer: customerId,
+      meal: mealsIDs,
+      address: address,
+    });
+  }
+
+  async findAllOrdersFOrCustomer(customerId) {
+    try {
+      const orders = await this.orderRepo
+        .createQueryBuilder('order')
+        .leftJoinAndSelect('order.meal', 'meal')
+        .leftJoin('order.customer', 'customer')
+        .addSelect(['customer.id', 'customer.user'])
+        .leftJoin('customer.user', 'user')
+        .addSelect(['user.username'])
+        .where('customer.id = :customerId', { customerId })
+        .getMany();
+      
+      console.log(orders)
+      return orders;
+    } catch (error) {
+      throw new Error("failed to fetch orders")
+    }
+  }
+
+  async create({
+    customerId,
+    mealIds,
+    address,
+  }: {
+    customerId: number;
+    mealIds: any[];
+    address: string;
+  }) {
+    try {
+      console.log(mealIds)
+      const mealIdsMapped = mealIds.map((id)=>({id}))
+      console.log(mealIdsMapped)
+      return await this.orderRepo.insert({
+        customer: { id: customerId },
+        meal: mealIdsMapped,
+        address,
+      });
+    } catch (error) {
+      console.log(error);
+      throw new Error('failed to order');
+    }
+  }
 }

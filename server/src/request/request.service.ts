@@ -59,6 +59,8 @@ export class RequestService {
     return 'A new request added';
   }
 
+
+  //** Has activity diagram
   async addRequestForDelivery(createRequestDto: any) {
     const {
       email,

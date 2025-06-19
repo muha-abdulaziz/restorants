@@ -63,7 +63,7 @@ function LoginPage() {
       >
         {contextHolder}
         <div style={{ width: "30%" }}>
-          <h1>Sign Up</h1>
+          <h1>Sign in</h1>
           <Form>
             <Controller
               control={control}
@@ -111,7 +111,7 @@ function LoginPage() {
 
             <div>
               <PrimaryButton onClick={handleSubmit(onSubmit)}>
-                Sign Up
+                Sign in
               </PrimaryButton>
 
               <div className="p-4 pl-0">

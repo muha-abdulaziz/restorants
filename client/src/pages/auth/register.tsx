@@ -138,14 +138,14 @@ function RegisterPage() {
 
           <div>
             <PrimaryButton onClick={handleSubmit(onSubmit)}>
-              Sign In
+              Sign up
             </PrimaryButton>
 
             <div className="p-4 pl-0">
               <p style={{ display: "inline-block" }} className="mr-2">
                 Do you have an account already ?
               </p>
-              <Link to={"/login"}>Sign up</Link>
+              <Link to={"/login"}>Sign in</Link>
             </div>
           </div>
         </Form>

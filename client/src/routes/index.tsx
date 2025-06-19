@@ -13,16 +13,26 @@ import { PrivateRouter } from "./private";
 import { Unauthorized } from "../pages/unauthorizedPage";
 import { UserRole } from "../common/types/enum";
 import { UsersPage } from "../pages/userMPage";
+import CustomerOrdersPage from "../pages/orderTableCustomer";
+import FoodOrderComponent from "../pages/foodOrderPage";
 
 export const appRoutes = createBrowserRouter([
-  // {
-  //   path: "/",
-  //   element: <Navigate to={"/meals"} />,
-  // },
+  {
+    path: "/",
+    element: <Navigate to={"/items"} />,
+  },
   {
     path: "/",
     element: <Home />,
     children: [
+      {
+        path: "/order/customer",
+        element: (
+          <PrivateRouter roles={[UserRole.CUSTOMER]}>
+            <CustomerOrdersPage />
+          </PrivateRouter>
+        ),
+      },
       {
         path: "requests",
         element: (
@@ -90,6 +100,14 @@ export const appRoutes = createBrowserRouter([
           <PublicRouter>
             <RegisterPage />
           </PublicRouter>
+        ),
+      },
+            {
+        path: "/items",
+        element: (
+          
+            <FoodOrderComponent />
+         
         ),
       },
     ],

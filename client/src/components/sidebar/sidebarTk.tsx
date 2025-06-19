@@ -13,17 +13,22 @@ const delivery = [
   { name: "Order Management", route: "/order-queue" },
 ];
 
+const customer = [{ name: "order Management", route: "/order/customer" }];
+
 export function SideBar() {
   const [items, setItems] = useState<{ name: string; route: string }[]>([]);
-  const [name,setName] = useState('')
+  const [name, setName] = useState("");
   useEffect(() => {
     const role = getRole();
     if (role === UserRole.ADMIN) {
       setItems(admin);
-      setName("Admin")
+      setName("Admin");
     } else if (role === UserRole.DELIVERY) {
       setItems(delivery);
-      setName("Delivery")
+      setName("Delivery");
+    } else if (role === UserRole.CUSTOMER) {
+      setItems(customer);
+      setName("Customer");
     }
   }, []);
 
