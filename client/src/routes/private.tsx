@@ -1,5 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { useUserAccount } from "../hooks/useAccount";
+import MenuPage from '../pages/restaurant/MenuPage';
+import MealsPage from '../pages/restaurant/MealsPage';
 
 interface PrivateRouterWithProps {
   children?: React.ReactNode;

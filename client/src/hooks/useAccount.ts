@@ -12,12 +12,16 @@ export const useUserAccount = () => {
   const navigate = useNavigate();
 
   const handleOnLogin = (authResponse: any) => {
-    const { access_token, username, role } = authResponse;
+    const { access_token, username, role, restaurantId } = authResponse;
     if (access_token) {
       addAuthHeader(access_token);
       storeToken(access_token);
       storeUserData(username, role);
-      navigate("/", { replace: true });
+      if (role === 'RESTAURANT_OWNER') {
+        navigate(`/restaurant/${restaurantId || 1}/menus`, { replace: true });
+      } else {
+        navigate("/", { replace: true });
+      }
     }
   };
 

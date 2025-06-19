@@ -13,6 +13,11 @@ const delivery = [
   { name: "Order Management", route: "/order-queue" },
 ];
 
+const restaurantOwner = [
+  { name: "Menu Management", route: "/restaurant/1/menus" },
+  { name: "Meals Management", route: "/restaurant/1/meals" },
+];
+
 export function SideBar() {
   const [items, setItems] = useState<{ name: string; route: string }[]>([]);
   const [name,setName] = useState('')
@@ -24,6 +29,9 @@ export function SideBar() {
     } else if (role === UserRole.DELIVERY) {
       setItems(delivery);
       setName("Delivery")
+    } else if (role === UserRole.RESTAURANT_OWNER) {
+      setItems(restaurantOwner);
+      setName("Restaurant Owner");
     }
   }, []);
 

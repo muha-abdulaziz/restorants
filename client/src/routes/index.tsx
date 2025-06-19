@@ -13,6 +13,8 @@ import { PrivateRouter } from "./private";
 import { Unauthorized } from "../pages/unauthorizedPage";
 import { UserRole } from "../common/types/enum";
 import { UsersPage } from "../pages/userMPage";
+import MenuPage from '../pages/restaurant/MenuPage';
+import MealsPage from '../pages/restaurant/MealsPage';
 
 export const appRoutes = createBrowserRouter([
   // {
@@ -90,6 +92,22 @@ export const appRoutes = createBrowserRouter([
           <PublicRouter>
             <RegisterPage />
           </PublicRouter>
+        ),
+      },
+      {
+        path: "restaurant/:restaurantId/menus",
+        element: (
+          <PrivateRouter roles={[UserRole.RESTAURANT_OWNER]}>
+            <MenuPage />
+          </PrivateRouter>
+        ),
+      },
+      {
+        path: "restaurant/:restaurantId/meals",
+        element: (
+          <PrivateRouter roles={[UserRole.RESTAURANT_OWNER]}>
+            <MealsPage />
+          </PrivateRouter>
         ),
       },
     ],
