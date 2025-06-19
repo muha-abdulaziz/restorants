@@ -15,6 +15,8 @@ import { UserRole } from "../common/types/enum";
 import { UsersPage } from "../pages/userMPage";
 import CustomerOrdersPage from "../pages/orderTableCustomer";
 import FoodOrderComponent from "../pages/foodOrderPage";
+import MenuPage from "../pages/restaurant/MenuPage";
+import MealsPage from "../pages/restaurant/MealsPage";
 
 export const appRoutes = createBrowserRouter([
   {
@@ -68,7 +70,7 @@ export const appRoutes = createBrowserRouter([
       // Public routes
       {
         path: "error",
-        element: (<Unauthorized/>),
+        element: <Unauthorized />,
       },
       {
         path: "restaurant-contract",
@@ -102,12 +104,25 @@ export const appRoutes = createBrowserRouter([
           </PublicRouter>
         ),
       },
-            {
+      {
         path: "/items",
+        element: <FoodOrderComponent />,
+      },
+
+      {
+        path: "restaurant/:restaurantId/menus",
         element: (
-          
-            <FoodOrderComponent />
-         
+          <PrivateRouter roles={[UserRole.RESTAURANT_OWNER]}>
+            <MenuPage />
+          </PrivateRouter>
+        ),
+      },
+      {
+        path: "restaurant/:restaurantId/meals",
+        element: (
+          <PrivateRouter roles={[UserRole.RESTAURANT_OWNER]}>
+            <MealsPage />
+          </PrivateRouter>
         ),
       },
     ],
