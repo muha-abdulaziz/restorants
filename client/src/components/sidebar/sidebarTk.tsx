@@ -17,6 +17,7 @@ const customer = [{ name: "order Management", route: "/order/customer" }];
 const restaurantOwner = [
   { name: "Menu Management", route: "/restaurant/1/menus" },
   { name: "Meals Management", route: "/restaurant/1/meals" },
+  { name: "Orders Management", route: "/restaurant/1/orders" },
 ];
 
 export function SideBar() {

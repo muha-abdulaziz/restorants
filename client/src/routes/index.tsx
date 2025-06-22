@@ -17,6 +17,7 @@ import CustomerOrdersPage from "../pages/orderTableCustomer";
 import FoodOrderComponent from "../pages/foodOrderPage";
 import MenuPage from "../pages/restaurant/MenuPage";
 import MealsPage from "../pages/restaurant/MealsPage";
+import OrdersPage from '../pages/restaurant/OrdersPage';
 
 export const appRoutes = createBrowserRouter([
   {
@@ -122,6 +123,14 @@ export const appRoutes = createBrowserRouter([
         element: (
           <PrivateRouter roles={[UserRole.RESTAURANT_OWNER]}>
             <MealsPage />
+          </PrivateRouter>
+        ),
+      },
+      {
+        path: "restaurant/:restaurantId/orders",
+        element: (
+          <PrivateRouter roles={[UserRole.RESTAURANT_OWNER]}>
+            <OrdersPage />
           </PrivateRouter>
         ),
       },
