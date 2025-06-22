@@ -15,6 +15,7 @@ import { UserRole } from "../common/types/enum";
 import { UsersPage } from "../pages/userMPage";
 import MenuPage from '../pages/restaurant/MenuPage';
 import MealsPage from '../pages/restaurant/MealsPage';
+import OrdersPage from '../pages/restaurant/OrdersPage';
 
 export const appRoutes = createBrowserRouter([
   // {
@@ -107,6 +108,14 @@ export const appRoutes = createBrowserRouter([
         element: (
           <PrivateRouter roles={[UserRole.RESTAURANT_OWNER]}>
             <MealsPage />
+          </PrivateRouter>
+        ),
+      },
+      {
+        path: "restaurant/:restaurantId/orders",
+        element: (
+          <PrivateRouter roles={[UserRole.RESTAURANT_OWNER]}>
+            <OrdersPage />
           </PrivateRouter>
         ),
       },
