@@ -12,6 +12,7 @@ import { Shipment } from './shipment.entity';
 import { Meal } from './meal.entity';
 import { Customer } from './customer.entity';
 import { OrderStatus } from 'src/order/order-status.enum-';
+import { Restaurant } from './restaurant.entity';
 
 @Entity()
 export class Order {
@@ -38,4 +39,7 @@ export class Order {
 
   @ManyToOne(() => Customer)
   customer: Customer;
+
+  @ManyToOne(() => Restaurant)
+  restaurant: Restaurant;
 }
