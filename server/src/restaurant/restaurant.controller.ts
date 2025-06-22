@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Query } from '@nestjs/common';
 import { RestaurantService } from './restaurant.service';
 import { MenuService } from './menu.service';
 import { CreateMenuDto } from './dto/create-menu.dto';
@@ -10,6 +10,7 @@ import { MealService } from './meal.service';
 import { CreateMealDto } from './dto/create-meal.dto';
 import { UpdateMealDto } from './dto/update-meal.dto';
 import { Meal } from '../entity/meal.entity';
+import { OrderStatus } from '../order/order-status.enum-';
 
 @Controller('restaurants')
 export class RestaurantController {
@@ -142,6 +143,36 @@ export class RestaurantController {
     return {
       success: true,
       message: 'Meal deleted successfully',
+    };
+  }
+
+  @Get(':restaurantId/orders')
+  async getOrdersByRestaurant(
+    @Param('restaurantId', ParseIntPipe) restaurantId: number,
+    @Query('page') page: string,
+    @Query('pageSize') pageSize: string,
+  ): Promise<ApiResponse<any>> {
+    const pageNum = page ? parseInt(page) : 1;
+    const sizeNum = pageSize ? parseInt(pageSize) : 10;
+    const { orders, total } = await this.restaurantService.getOrdersByRestaurant(restaurantId, pageNum, sizeNum);
+    return {
+      success: true,
+      message: 'Orders retrieved successfully',
+      data: { orders, total },
+    };
+  }
+
+  @Patch(':restaurantId/orders/:orderId')
+  async updateOrderStatus(
+    @Param('restaurantId', ParseIntPipe) restaurantId: number,
+    @Param('orderId', ParseIntPipe) orderId: number,
+    @Body('status') status: OrderStatus,
+  ): Promise<ApiResponse<any>> {
+    const order = await this.restaurantService.updateOrderStatus(restaurantId, orderId, status);
+    return {
+      success: true,
+      message: 'Order status updated successfully',
+      data: order,
     };
   }
 }
