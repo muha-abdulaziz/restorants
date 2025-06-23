@@ -65,24 +65,34 @@ export class OrderService {
 
   async create({
     customerId,
-    mealIds,
+    items,
     address,
   }: {
     customerId: number;
-    mealIds: any[];
+    items: { id: number; restaurantId: number }[];
     address: string;
   }) {
     try {
-      console.log(mealIds)
-      const mealIdsMapped = mealIds.map((id)=>({id}))
-      console.log(mealIdsMapped)
-      return await this.orderRepo.insert({
-        customer: { id: customerId },
-        meal: mealIdsMapped,
-        address,
-      });
+      // Group items by restaurantId
+      const grouped = items.reduce((acc, item) => {
+        if (!acc[item.restaurantId]) acc[item.restaurantId] = [];
+        acc[item.restaurantId].push(item.id);
+        return acc;
+      }, {} as Record<number, number[]>);
+
+      // Create an order for each restaurant
+      const results = await Promise.all(
+        Object.entries(grouped).map(async ([restaurantId, mealIds]) => {
+          return this.orderRepo.insert({
+            customer: { id: customerId },
+            meal: (mealIds as number[]).map((id) => ({ id })),
+            address,
+            restaurant: { id: +restaurantId },
+          });
+        })
+      );
+      return results;
     } catch (error) {
-      console.log(error);
       throw new Error('failed to order');
     }
   }

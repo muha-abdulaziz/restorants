@@ -29,7 +29,8 @@ export class RestaurantController {
   @Roles(UserRole.RESTAURANT_OWNER)
   @Get('profile/mine')
   async getMyRestaurantProfile(@Request() req): Promise<ApiResponse<Restaurant>> {
-    const restaurant = await this.restaurantService.findRestaurantByOwnerId(req.user.id);
+    console.log("req.user ->", req.user);
+    const restaurant = await this.restaurantService.findRestaurantByOwnerId(req.user.userId);
     return {
       success: true,
       message: 'Restaurant profile retrieved successfully',
