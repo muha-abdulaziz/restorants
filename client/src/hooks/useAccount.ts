@@ -20,7 +20,7 @@ export const useUserAccount = () => {
       storeUserData(username, userId, role);
       if (role === 'RESTAURANT_OWNER') {
         storeRestauranData(restaurantId);
-        navigate(`/restaurant/${restaurantId || userId}/menus`, { replace: true });
+        navigate(`/restaurant/${restaurantId || userId}/dashboard`, { replace: true });
       } else {
         navigate("/", { replace: true });
       }
