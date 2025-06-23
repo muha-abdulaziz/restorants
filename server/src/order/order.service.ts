@@ -15,7 +15,7 @@ export class OrderService {
     try {
       const orders = await this.orderRepo
         .createQueryBuilder('order')
-        .leftJoinAndSelect('order.meal', 'meal')
+        .leftJoinAndSelect('order.meals', 'meal')
         .leftJoin('order.customer', 'customer')
         .addSelect(['customer.id', 'customer.user'])
         .leftJoin('customer.user', 'user')
@@ -39,7 +39,7 @@ export class OrderService {
 
     await this.orderRepo.insert({
       customer: customerId,
-      meal: mealsIDs,
+      meals: mealsIDs,
       address: address,
     });
   }
@@ -48,7 +48,7 @@ export class OrderService {
     try {
       const orders = await this.orderRepo
         .createQueryBuilder('order')
-        .leftJoinAndSelect('order.meal', 'meal')
+        .leftJoinAndSelect('order.meals', 'meal')
         .leftJoin('order.customer', 'customer')
         .addSelect(['customer.id', 'customer.user'])
         .leftJoin('customer.user', 'user')
@@ -83,12 +83,13 @@ export class OrderService {
       // Create an order for each restaurant
       const results = await Promise.all(
         Object.entries(grouped).map(async ([restaurantId, mealIds]) => {
-          return this.orderRepo.insert({
+          const order = this.orderRepo.create({
             customer: { id: customerId },
-            meal: (mealIds as number[]).map((id) => ({ id })),
+            meals: (mealIds as number[]).map((id) => ({ id })),
             address,
             restaurant: { id: +restaurantId },
           });
+          return this.orderRepo.save(order);
         })
       );
       return results;

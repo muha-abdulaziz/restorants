@@ -7,6 +7,8 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { Shipment } from './shipment.entity';
 import { Meal } from './meal.entity';
@@ -34,8 +36,9 @@ export class Order {
   @OneToOne(() => Shipment)
   shipment: Shipment;
 
-  @OneToMany(() => Meal, (meal) => meal.order)
-  meal: Meal[];
+  @ManyToMany(() => Meal)
+  @JoinTable()
+  meals: Meal[];
 
   @ManyToOne(() => Customer)
   customer: Customer;

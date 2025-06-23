@@ -1,6 +1,5 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Menu } from './menu.entity';
-import { Order } from './order.entity';
 import { Cart } from './cart.entity';
 import {
   IsString,
@@ -52,10 +51,6 @@ export class Meal {
 
   @ManyToOne(() => Menu, (menu) => menu.meals, { nullable: false })
   menu: Menu;
-
-  // it will not save order Id
-  @ManyToOne(() => Order)
-  order: Order;
 
   @ManyToOne(() => Cart)
   cart: Cart;
