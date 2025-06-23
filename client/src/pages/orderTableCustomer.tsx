@@ -23,6 +23,7 @@ const CustomerOrdersPage = () => {
           Authorization: `Bearer ${getToken()}`,
         },
       });
+      console.log(response.data.data);
       setOrders(response.data.data);
     } catch (error) {
       message.error("Failed to fetch orders.");
@@ -44,6 +45,20 @@ const CustomerOrdersPage = () => {
       dataIndex: "createdAt",
       key: "createdAt",
       render: (text: any) => new Date(text).toLocaleString(),
+    },
+    {
+      title: "Meal Count",
+      dataIndex: "meals",
+      key: "meals",
+      render: (meals: any) => meals.length,
+    },
+        {
+      title: "Meals",
+      dataIndex: "meals",
+      key: "meals",
+     render: (meals: any) =>{
+        return  meals.map((d:any)=><span>{d.name_en}</span>)
+     },
     },
     { title: "status", dataIndex: "status", key: "status" },
   ];
