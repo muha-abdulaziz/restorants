@@ -28,7 +28,7 @@ export class RestaurantService {
     async getOrdersByRestaurant(restaurantId: number, page = 1, pageSize = 10) {
       const [orders, total] = await this.orderRepo.findAndCount({
         where: { restaurant: { id: restaurantId } },
-        relations: ['customer', 'meal', 'meal.menu', 'shipment'],
+        relations: ['customer', 'meal', 'meal.menu'],
         order: { createdAt: 'DESC' },
         skip: (page - 1) * pageSize,
         take: pageSize,

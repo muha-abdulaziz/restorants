@@ -181,6 +181,7 @@ export class RestaurantController {
     @Query('page') page: string,
     @Query('pageSize') pageSize: string,
   ): Promise<ApiResponse<any>> {
+    try {
     const pageNum = page ? parseInt(page) : 1;
     const sizeNum = pageSize ? parseInt(pageSize) : 10;
     const { orders, total } = await this.restaurantService.getOrdersByRestaurant(restaurantId, pageNum, sizeNum);
@@ -189,6 +190,10 @@ export class RestaurantController {
       message: 'Orders retrieved successfully',
       data: { orders, total },
     };
+    } catch (error) {
+      console.log(error);
+      throw error;
+    } 
   }
 
   @Patch(':restaurantId/orders/:orderId')
