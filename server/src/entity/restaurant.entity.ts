@@ -24,6 +24,6 @@ export class Restaurant {
   @JoinColumn()
   owner: OwnerRestaurant;
 
-  @OneToMany(() => Restaurant, (resturant) => resturant.menus)
-  menus: Menu;
+  @OneToMany(() => Menu, (menu) => menu.restaurant)
+  menus: Menu[];
 }
