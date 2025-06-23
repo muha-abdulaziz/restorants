@@ -29,3 +29,7 @@ export const storeUserData = (username: string, userId: string, role: string) =>
 export const getRole = () => {
   return sessionStorage.getItem("role");
 };
+
+export const getUserId = () => {
+  return sessionStorage.getItem("userId");
+};

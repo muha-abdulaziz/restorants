@@ -18,7 +18,7 @@ export const useUserAccount = () => {
       storeToken(access_token);
       storeUserData(username, userId, role);
       if (role === 'RESTAURANT_OWNER') {
-        navigate(`/restaurant/${restaurantId || 1}/menus`, { replace: true });
+        navigate(`/restaurant/${restaurantId || userId}/menus`, { replace: true });
       } else {
         navigate("/", { replace: true });
       }

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { getRole } from "../../helpers/auth";
+import { getRole, getUserId } from "../../helpers/auth";
 import { UserRole } from "../../common/types/enum";
 import { Link } from "react-router-dom";
+import { getRestaurantProfile } from "../../api/restaurant.api";
 
 const admin = [
   { name: "Request", route: "/requests" },
@@ -14,19 +15,34 @@ const delivery = [
 ];
 
 const customer = [{ name: "order Management", route: "/order/customer" }];
-const restaurantOwner = [
+const restaurantOwnerBase = [
   { name: "Profile", route: "/restaurant/profile" },
-  { name: "Menu Management", route: "/restaurant/1/menus" },
-  { name: "Meals Management", route: "/restaurant/1/meals" },
-  { name: "Orders Management", route: "/restaurant/1/orders" },
+  { name: "Menu Management", route: "/restaurant/{id}/menus" },
+  { name: "Meals Management", route: "/restaurant/{id}/meals" },
+  { name: "Orders Management", route: "/restaurant/{id}/orders" },
 ];
 
 export function SideBar() {
   const [items, setItems] = useState<{ name: string; route: string }[]>([]);
   const [name, setName] = useState("");
+  const [restaurantId, setRestaurantId] = useState<string | null>(null);
+
   useEffect(() => {
     const role = getRole();
-    if (role === UserRole.ADMIN) {
+    if (role === UserRole.RESTAURANT_OWNER) {
+      // Fetch restaurant id for owner
+      getRestaurantProfile().then((res: any) => {
+        const id = res?.data?.id || getUserId();
+        setRestaurantId(id);
+        setItems(
+          restaurantOwnerBase.map((item) => ({
+            ...item,
+            route: item.route.replace("{id}", id),
+          }))
+        );
+      });
+      setName("Restaurant Owner");
+    } else if (role === UserRole.ADMIN) {
       setItems(admin);
       setName("Admin");
     } else if (role === UserRole.DELIVERY) {
@@ -35,10 +51,6 @@ export function SideBar() {
     } else if (role === UserRole.CUSTOMER) {
       setItems(customer);
       setName("Customer");
-      setName("Delivery")
-    } else if (role === UserRole.RESTAURANT_OWNER) {
-      setItems(restaurantOwner);
-      setName("Restaurant Owner");
     }
   }, []);
 
