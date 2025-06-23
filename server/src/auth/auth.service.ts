@@ -3,6 +3,7 @@ import { CustomerService } from 'src/customer/customer.service';
 import { SecurityUtilsService } from 'src/SecurityUtils/security-utils.service';
 import { UserRole } from 'src/user/user-role.enum';
 import { UserService } from 'src/user/user.service';
+import { OwnerRestaurantService } from 'src/owner-restaurant/owner-restaurant.service';
 
 @Injectable()
 export class AuthService {
@@ -10,6 +11,7 @@ export class AuthService {
     private securityUtilsService: SecurityUtilsService,
     private customerService: CustomerService,
     private userService: UserService,
+    private ownerRestaurantService: OwnerRestaurantService,
   ) {}
 
   /**
@@ -44,7 +46,15 @@ export class AuthService {
       role: user.role,
     });
 
-    return { access_token: token, role: user.role, username: user.username };
+    let restaurantId = null;
+    if (user.role === UserRole.RESTAURANT_OWNER) {
+      const owner = await this.ownerRestaurantService.findByUserId(user.id);
+      if (owner) {
+        restaurantId = owner.id;
+      }
+    }
+
+    return { access_token: token, role: user.role, username: user.username, userId: user.id, restaurantId };
   }
 
   // the only customer is able to register
@@ -83,6 +93,6 @@ export class AuthService {
       role: customerRole,
     });
 
-    return { access_token: token, role: customerRole, username };
+    return { access_token: token, role: customerRole, username, userId };
   }
 }

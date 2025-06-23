@@ -5,6 +5,7 @@ import {
   removeToken,
   storeToken,
   storeUserData,
+  storeRestauranData,
 } from "../helpers/auth";
 import { useEffect, useState } from "react";
 
@@ -12,13 +13,14 @@ export const useUserAccount = () => {
   const navigate = useNavigate();
 
   const handleOnLogin = (authResponse: any) => {
-    const { access_token, username, role, restaurantId } = authResponse;
+    const { access_token, username, role, restaurantId, userId } = authResponse;
     if (access_token) {
       addAuthHeader(access_token);
       storeToken(access_token);
-      storeUserData(username, role);
+      storeUserData(username, userId, role);
       if (role === 'RESTAURANT_OWNER') {
-        navigate(`/restaurant/${restaurantId || 1}/menus`, { replace: true });
+        storeRestauranData(restaurantId);
+        navigate(`/restaurant/${restaurantId || userId}/dashboard`, { replace: true });
       } else {
         navigate("/", { replace: true });
       }

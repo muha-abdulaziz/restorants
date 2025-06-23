@@ -11,6 +11,7 @@ type FoodItem = {
   name_en: string;
   imageUrl: string;
   price: number;
+  restaurantId: number;
 };
 
 const mockItems: FoodItem[] = [
@@ -20,6 +21,7 @@ const mockItems: FoodItem[] = [
     imageUrl:
       "https://images.unsplash.com/photo-1594007654729-407eedc4be65?q=80&w=428&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     price: 100,
+    restaurantId: 1,
   },
   {
     id: 2,
@@ -27,6 +29,7 @@ const mockItems: FoodItem[] = [
     price: 230,
     imageUrl:
       "https://plus.unsplash.com/premium_photo-1668146927669-f2edf6e86f6f?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    restaurantId: 2,
   },
   {
     id: 3,
@@ -34,6 +37,7 @@ const mockItems: FoodItem[] = [
     price: 203,
     imageUrl:
       "https://images.unsplash.com/photo-1460306855393-0410f61241c7?q=80&w=873&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    restaurantId: 3,
   },
 ];
 
@@ -51,11 +55,19 @@ const FoodOrderComponent: React.FC = () => {
         if (!res.ok) throw new Error("Fetch failed");
         const data = await res.json();
         if (data?.data && Array.isArray(data.data) && data.data.length > 0) {
+          setItems(
+            data.data.map((item: any) => ({
+              id: item.id,
+              name_en: item.name_en,
+              imageUrl: item.imageUrl,
+              price: Number(item.price),
+              restaurantId: item.menu?.restaurant?.id ?? 0,
+            }))
+          );
         } else {
           throw new Error("Fetch failed");
         }
       } catch (err) {
-   
         notification.warning({
           message: "Using mock items",
           description: "Failed to fetch items from server, using mock data.",
@@ -111,7 +123,7 @@ const FoodOrderComponent: React.FC = () => {
           Authorization: `Bearer ${getToken()}`,
         },
         body: JSON.stringify({
-          itemIds: selectedItems.map((item) => item.id),
+          items: selectedItems.map((item) => ({ id: item.id, restaurantId: item.restaurantId })),
           address,
         }),
       });

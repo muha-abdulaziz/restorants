@@ -58,7 +58,7 @@ const DeliveryRequestForm = () => {
           name="password"
           rules={[{ required: true, message: "Please enter your password" }]}
         >
-          <Input placeholder="Enter your password" />
+          <Input.Password placeholder="Enter your password" />
         </Form.Item>
 
         <Form.Item

@@ -10,6 +10,19 @@ const axiosInstance = axios.create({
   },
 });
 
+// Always use the latest token from sessionStorage for every request
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = getToken();
+    if (token) {
+      config.headers = config.headers || {};
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
 export const addAuthHeader = (token: string) => {
   axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
 };

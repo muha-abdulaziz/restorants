@@ -17,6 +17,10 @@ import CustomerOrdersPage from "../pages/orderTableCustomer";
 import FoodOrderComponent from "../pages/foodOrderPage";
 import MenuPage from "../pages/restaurant/MenuPage";
 import MealsPage from "../pages/restaurant/MealsPage";
+import OrdersPage from '../pages/restaurant/OrdersPage';
+import { OwnerProfilePage } from "../pages/restaurant/OwnerProfilePage";
+import OrderDetailsPage from '../pages/restaurant/OrderDetailsPage';
+import DashboardPage from "../pages/restaurant/DashboardPage";
 
 export const appRoutes = createBrowserRouter([
   {
@@ -122,6 +126,38 @@ export const appRoutes = createBrowserRouter([
         element: (
           <PrivateRouter roles={[UserRole.RESTAURANT_OWNER]}>
             <MealsPage />
+          </PrivateRouter>
+        ),
+      },
+      {
+        path: "restaurant/:restaurantId/orders",
+        element: (
+          <PrivateRouter roles={[UserRole.RESTAURANT_OWNER]}>
+            <OrdersPage />
+          </PrivateRouter>
+        ),
+      },
+      {
+        path: "restaurant/:restaurantId/orders/:orderId",
+        element: (
+          <PrivateRouter roles={[UserRole.RESTAURANT_OWNER]}>
+            <OrderDetailsPage />
+          </PrivateRouter>
+        ),
+      },
+      {
+        path: "restaurant/profile",
+        element: (
+          <PrivateRouter roles={[UserRole.RESTAURANT_OWNER]}>
+            <OwnerProfilePage />
+          </PrivateRouter>
+        ),
+      },
+      {
+        path: "restaurant/:restaurantId/dashboard",
+        element: (
+          <PrivateRouter roles={[UserRole.RESTAURANT_OWNER]}>
+            <DashboardPage />
           </PrivateRouter>
         ),
       },

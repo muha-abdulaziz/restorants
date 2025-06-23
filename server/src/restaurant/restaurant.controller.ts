@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Query, UseGuards, Request, NotFoundException } from '@nestjs/common';
 import { RestaurantService } from './restaurant.service';
 import { MenuService } from './menu.service';
 import { CreateMenuDto } from './dto/create-menu.dto';
@@ -10,6 +10,14 @@ import { MealService } from './meal.service';
 import { CreateMealDto } from './dto/create-meal.dto';
 import { UpdateMealDto } from './dto/update-meal.dto';
 import { Meal } from '../entity/meal.entity';
+import { OrderStatus } from '../order/order-status.enum-';
+import { JwtAuthGuard } from 'src/SecurityUtils/jwt-auth.guard';
+import { RolesGuard } from 'src/SecurityUtils/roles.guard';
+import { Roles } from 'src/SecurityUtils/role.decorator';
+import { UserRole } from 'src/user/user-role.enum';
+import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
+import { UpdateOrderStatusDto } from './dto/update-order-status.dto';
+import { ValidationPipe } from '@nestjs/common';
 
 @Controller('restaurants')
 export class RestaurantController {
@@ -18,6 +26,31 @@ export class RestaurantController {
     private readonly menuService: MenuService,
     private readonly mealService: MealService,
   ) {}
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.RESTAURANT_OWNER)
+  @Get('profile/mine')
+  async getMyRestaurantProfile(@Request() req): Promise<ApiResponse<Restaurant>> {
+    console.log("req.user ->", req.user);
+    const restaurant = await this.restaurantService.findRestaurantByOwnerId(req.user.userId);
+    return {
+      success: true,
+      message: 'Restaurant profile retrieved successfully',
+      data: restaurant,
+    };
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.RESTAURANT_OWNER)
+  @Patch('profile/mine')
+  async updateMyRestaurantProfile(@Request() req, @Body() updateRestaurantDto: UpdateRestaurantDto): Promise<ApiResponse<Restaurant>> {
+    const restaurant = await this.restaurantService.updateRestaurantByOwnerId(req.user.id, updateRestaurantDto);
+    return {
+      success: true,
+      message: 'Restaurant profile updated successfully',
+      data: restaurant,
+    };
+  }
 
   @Get()
   async getAllRestaurants(): Promise<ApiResponse<Restaurant[]>> {
@@ -142,6 +175,71 @@ export class RestaurantController {
     return {
       success: true,
       message: 'Meal deleted successfully',
+    };
+  }
+
+  @Get(':restaurantId/orders')
+  async getOrdersByRestaurant(
+    @Param('restaurantId', ParseIntPipe) restaurantId: number,
+    @Query('page') page: string,
+    @Query('pageSize') pageSize: string,
+  ): Promise<ApiResponse<any>> {
+    try {
+    const pageNum = page ? parseInt(page) : 1;
+    const sizeNum = pageSize ? parseInt(pageSize) : 10;
+    const { orders, total } = await this.restaurantService.getOrdersByRestaurant(restaurantId, pageNum, sizeNum);
+    return {
+      success: true,
+      message: 'Orders retrieved successfully',
+      data: { orders, total },
+    };
+    } catch (error) {
+      console.log(error);
+      throw error;
+    } 
+  }
+
+  @Patch(':restaurantId/orders/:orderId')
+  async updateOrderStatus(
+    @Param('restaurantId', ParseIntPipe) restaurantId: number,
+    @Param('orderId', ParseIntPipe) orderId: number,
+    @Body(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true })) updateOrderStatusDto: UpdateOrderStatusDto,
+  ): Promise<ApiResponse<any>> {
+    const order = await this.restaurantService.updateOrderStatus(restaurantId, orderId, updateOrderStatusDto.status as OrderStatus);
+    return {
+      success: true,
+      message: 'Order status updated successfully',
+      data: order,
+    };
+  }
+
+  @Get(':restaurantId/orders/:orderId')
+  async getOrderById(
+    @Param('restaurantId', ParseIntPipe) restaurantId: number,
+    @Param('orderId', ParseIntPipe) orderId: number,
+  ): Promise<ApiResponse<any>> {
+    const order = await this.restaurantService.getOrderById(restaurantId, orderId);
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+    return {
+      success: true,
+      message: 'Order retrieved successfully',
+      data: order,
+    };
+  }
+
+  @Get(':restaurantId/statistics')
+  async getStatistics(
+    @Param('restaurantId', ParseIntPipe) restaurantId: number,
+    @Query('from') from?: string,
+    @Query('to') to?: string,
+  ) {
+    const stats = await this.restaurantService.getStatistics(restaurantId, from, to);
+    return {
+      success: true,
+      message: 'Statistics retrieved successfully',
+      data: stats,
     };
   }
 }

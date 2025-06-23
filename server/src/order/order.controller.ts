@@ -52,10 +52,10 @@ export class OrderController {
     try {
       const userId = req.user?.userId;
       const customer = await this.customerService.findOne(userId);
-      const mealIds = body.itemIds;
+      const items = body.items; // [{id, restaurantId}]
       const address = body.address;
       const customerId = customer.id;
-      return this.orderService.create({ customerId, mealIds, address });
+      return this.orderService.create({ customerId, items, address });
     } catch (error) {
       return new HttpException(
         'Failed to order the meals',

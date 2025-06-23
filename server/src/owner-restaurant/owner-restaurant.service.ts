@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { OwnerRestaurant } from 'src/entity/ownerRestaurant.entity';
 import { RestaurantService } from 'src/restaurant/restaurant.service';
@@ -12,8 +12,13 @@ export class OwnerRestaurantService {
     @InjectRepository(OwnerRestaurant)
     private OwnerRestaurantRepo: Repository<OwnerRestaurant>,
     private userService: UserService,
+    @Inject(forwardRef(() => RestaurantService))
     private restaurantService: RestaurantService,
   ) {}
+
+  async findByUserId(userId: number): Promise<OwnerRestaurant> {
+    return this.OwnerRestaurantRepo.findOne({ where: { user: { id: userId } } });
+  }
 
   async addNewOwnerResaurant(requestRestaurant) {
     // create user , ownerRestaurant, new restaurant

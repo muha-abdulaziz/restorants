@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { OwnerRestaurantService } from './owner-restaurant.service';
 import { OwnerRestaurantController } from './owner-restaurant.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -10,7 +10,7 @@ import { OwnerRestaurant } from 'src/entity/ownerRestaurant.entity';
   imports: [
     TypeOrmModule.forFeature([OwnerRestaurant]),
     UserModule,
-    RestaurantModule,
+    forwardRef(() => RestaurantModule),
   ],
   controllers: [OwnerRestaurantController],
   providers: [OwnerRestaurantService],

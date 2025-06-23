@@ -7,11 +7,14 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { Shipment } from './shipment.entity';
 import { Meal } from './meal.entity';
 import { Customer } from './customer.entity';
 import { OrderStatus } from 'src/order/order-status.enum-';
+import { Restaurant } from './restaurant.entity';
 
 @Entity()
 export class Order {
@@ -33,9 +36,13 @@ export class Order {
   @OneToOne(() => Shipment)
   shipment: Shipment;
 
-  @OneToMany(() => Meal, (meal) => meal.order)
-  meal: Meal[];
+  @ManyToMany(() => Meal)
+  @JoinTable()
+  meals: Meal[];
 
   @ManyToOne(() => Customer)
   customer: Customer;
+
+  @ManyToOne(() => Restaurant)
+  restaurant: Restaurant;
 }

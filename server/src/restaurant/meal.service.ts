@@ -85,6 +85,8 @@ export class MealService {
   }
 
   async findAllMealsForCustomer(): Promise<Meal[]> {
-    return await this.mealRepository.find();
+    return await this.mealRepository.find({
+      relations: ['menu', 'menu.restaurant']
+    });
   }
 }
