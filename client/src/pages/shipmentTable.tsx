@@ -28,7 +28,6 @@ const ShipmentsForDeliveryPerson: React.FC = () => {
           Authorization: `Bearer ${getToken()}`,
         },
       }); 
-      console.log(response.data)
       setShipments(response.data.data);
     } catch (error) {
       notification.error({ message: "Failed to load shipments" });

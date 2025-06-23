@@ -13,9 +13,9 @@ const OrdersQueueDeliveryPerson: React.FC = () => {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
-      }); // ← Your actual endpoint
+      }); 
       const data = await response.json();
-      console.log(data)
+  
       setOrders(data.data);
     } catch (error) {
       console.error("Error fetching prepared orders:", error);

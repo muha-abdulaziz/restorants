@@ -50,16 +50,12 @@ const FoodOrderComponent: React.FC = () => {
         const res = await fetch(`${BASE_URL}/meal`);
         if (!res.ok) throw new Error("Fetch failed");
         const data = await res.json();
-        console.log(data)
         if (data?.data && Array.isArray(data.data) && data.data.length > 0) {
-          console.log('...')
-          console.log(data.data)
-          setItems(data.data);
         } else {
           throw new Error("Fetch failed");
         }
       } catch (err) {
-        console.log(err)
+   
         notification.warning({
           message: "Using mock items",
           description: "Failed to fetch items from server, using mock data.",

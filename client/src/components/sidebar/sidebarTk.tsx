@@ -33,7 +33,7 @@ export function SideBar() {
     } else if (role === UserRole.CUSTOMER) {
       setItems(customer);
       setName("Customer");
-      setName("Delivery")
+      setName("Customer")
     } else if (role === UserRole.RESTAURANT_OWNER) {
       setItems(restaurantOwner);
       setName("Restaurant Owner");
