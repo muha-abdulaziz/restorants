@@ -1,16 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Restaurant } from 'src/entity/restaurant.entity';
 import { Order } from 'src/entity/order.entity';
 import { Repository } from 'typeorm';
 import { OrderStatus } from '../order/order-status.enum-';
+import { OwnerRestaurantService } from 'src/owner-restaurant/owner-restaurant.service';
+import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
 
 @Injectable()
 export class RestaurantService {
 
     constructor(
       @InjectRepository(Restaurant) private restaurantRepo:Repository<Restaurant>,
-      @InjectRepository(Order) private orderRepo: Repository<Order>
+      @InjectRepository(Order) private orderRepo: Repository<Order>,
+      @Inject(forwardRef(() => OwnerRestaurantService))
+      private ownerRestaurantService: OwnerRestaurantService,
     ){}
 
    async create(restaurant:any){
@@ -39,5 +43,23 @@ export class RestaurantService {
       if (!order) throw new Error('Order not found or does not belong to this restaurant');
       order.status = status;
       return await this.orderRepo.save(order);
+    }
+
+    async findRestaurantByOwnerId(userId: number): Promise<Restaurant> {
+      const owner = await this.ownerRestaurantService.findByUserId(userId);
+      if (!owner) {
+        throw new NotFoundException('Restaurant owner not found');
+      }
+      return this.restaurantRepo.findOne({ where: { owner: { id: owner.id } }, relations: ['owner', 'owner.user'] });
+    }
+  
+    async updateRestaurantByOwnerId(userId: number, updateRestaurantDto: UpdateRestaurantDto): Promise<Restaurant> {
+      const restaurant = await this.findRestaurantByOwnerId(userId);
+      if (!restaurant) {
+        throw new NotFoundException('Restaurant not found for the current owner.');
+      }
+  
+      await this.restaurantRepo.update(restaurant.id, updateRestaurantDto);
+      return this.findRestaurantByOwnerId(userId);
     }
 }

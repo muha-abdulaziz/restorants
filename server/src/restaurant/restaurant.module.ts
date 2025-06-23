@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { RestaurantService } from './restaurant.service';
 import { RestaurantController } from './restaurant.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -9,9 +9,13 @@ import { Menu } from 'src/entity/menu.entity';
 import { Meal } from 'src/entity/meal.entity';
 import { MealController } from './meal.controller';
 import { Order } from 'src/entity/order.entity';
+import { OwnerRestaurantModule } from 'src/owner-restaurant/owner-restaurant.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Restaurant, Menu, Meal, Order])],
+  imports: [
+    TypeOrmModule.forFeature([Restaurant, Menu, Meal, Order]),
+    forwardRef(() => OwnerRestaurantModule),
+  ],
   controllers: [RestaurantController,MealController],
   providers: [RestaurantService, MenuService, MealService],
   exports: [RestaurantService, MenuService, MealService],

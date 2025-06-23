@@ -24,4 +24,8 @@ export const getRestaurantOrders = (restaurantId: string | number, page = 1, pag
   httpGet(`/restaurants/${restaurantId}/orders?page=${page}&pageSize=${pageSize}`);
 
 export const updateOrderStatus = (restaurantId: string | number, orderId: string | number, status: string) =>
-  httpPatch(`/restaurants/${restaurantId}/orders/${orderId}`, { status }); 
+  httpPatch(`/restaurants/${restaurantId}/orders/${orderId}`, { status });
+
+export const getRestaurantProfile = () => httpGet('/restaurants/profile/mine');
+
+export const updateRestaurantProfile = (data: any) => httpPatch('/restaurants/profile/mine', data); 

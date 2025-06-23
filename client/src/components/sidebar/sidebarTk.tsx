@@ -15,6 +15,7 @@ const delivery = [
 
 const customer = [{ name: "order Management", route: "/order/customer" }];
 const restaurantOwner = [
+  { name: "Profile", route: "/restaurant/profile" },
   { name: "Menu Management", route: "/restaurant/1/menus" },
   { name: "Meals Management", route: "/restaurant/1/meals" },
   { name: "Orders Management", route: "/restaurant/1/orders" },

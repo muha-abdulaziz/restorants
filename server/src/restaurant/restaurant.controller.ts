@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Query, UseGuards, Request } from '@nestjs/common';
 import { RestaurantService } from './restaurant.service';
 import { MenuService } from './menu.service';
 import { CreateMenuDto } from './dto/create-menu.dto';
@@ -11,6 +11,11 @@ import { CreateMealDto } from './dto/create-meal.dto';
 import { UpdateMealDto } from './dto/update-meal.dto';
 import { Meal } from '../entity/meal.entity';
 import { OrderStatus } from '../order/order-status.enum-';
+import { JwtAuthGuard } from 'src/SecurityUtils/jwt-auth.guard';
+import { RolesGuard } from 'src/SecurityUtils/roles.guard';
+import { Roles } from 'src/SecurityUtils/role.decorator';
+import { UserRole } from 'src/user/user-role.enum';
+import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
 
 @Controller('restaurants')
 export class RestaurantController {
@@ -19,6 +24,30 @@ export class RestaurantController {
     private readonly menuService: MenuService,
     private readonly mealService: MealService,
   ) {}
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.RESTAURANT_OWNER)
+  @Get('profile/mine')
+  async getMyRestaurantProfile(@Request() req): Promise<ApiResponse<Restaurant>> {
+    const restaurant = await this.restaurantService.findRestaurantByOwnerId(req.user.id);
+    return {
+      success: true,
+      message: 'Restaurant profile retrieved successfully',
+      data: restaurant,
+    };
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.RESTAURANT_OWNER)
+  @Patch('profile/mine')
+  async updateMyRestaurantProfile(@Request() req, @Body() updateRestaurantDto: UpdateRestaurantDto): Promise<ApiResponse<Restaurant>> {
+    const restaurant = await this.restaurantService.updateRestaurantByOwnerId(req.user.id, updateRestaurantDto);
+    return {
+      success: true,
+      message: 'Restaurant profile updated successfully',
+      data: restaurant,
+    };
+  }
 
   @Get()
   async getAllRestaurants(): Promise<ApiResponse<Restaurant[]>> {
