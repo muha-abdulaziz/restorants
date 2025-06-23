@@ -27,7 +27,6 @@ export class OrderController {
   @Roles(UserRole.DELIVERY)
   @Get('/prepared')
   findAllPreparedOrders() {
-    console.log('hi');
     return this.orderService.findAllPreparedOrders();
   }
 
@@ -56,10 +55,8 @@ export class OrderController {
       const mealIds = body.itemIds;
       const address = body.address;
       const customerId = customer.id;
-
       return this.orderService.create({ customerId, mealIds, address });
     } catch (error) {
-      console.log("Looooooooooooooooooo")
       return new HttpException(
         'Failed to order the meals',
         HttpStatus.BAD_REQUEST,

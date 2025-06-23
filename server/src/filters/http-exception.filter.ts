@@ -20,7 +20,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
     let details = null;
 
     if (exception instanceof HttpException) {
-      console.log(exception)
       status = exception.getStatus();
       const exceptionResponse = exception.getResponse();
       message =

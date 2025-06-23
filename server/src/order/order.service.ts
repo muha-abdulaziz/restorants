@@ -55,8 +55,6 @@ export class OrderService {
         .addSelect(['user.username'])
         .where('customer.id = :customerId', { customerId })
         .getMany();
-      
-      console.log(orders)
       return orders;
     } catch (error) {
       throw new Error("failed to fetch orders")
@@ -73,16 +71,14 @@ export class OrderService {
     address: string;
   }) {
     try {
-      console.log(mealIds)
       const mealIdsMapped = mealIds.map((id)=>({id}))
-      console.log(mealIdsMapped)
+     
       return await this.orderRepo.insert({
         customer: { id: customerId },
         meal: mealIdsMapped,
         address,
       });
     } catch (error) {
-      console.log(error);
       throw new Error('failed to order');
     }
   }
