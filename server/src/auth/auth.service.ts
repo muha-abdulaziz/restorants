@@ -44,7 +44,7 @@ export class AuthService {
       role: user.role,
     });
 
-    return { access_token: token, role: user.role, username: user.username };
+    return { access_token: token, role: user.role, username: user.username, userId: user.id };
   }
 
   // the only customer is able to register
@@ -83,6 +83,6 @@ export class AuthService {
       role: customerRole,
     });
 
-    return { access_token: token, role: customerRole, username };
+    return { access_token: token, role: customerRole, username, userId };
   }
 }

@@ -20,8 +20,9 @@ export const removeToken = () => {
   sessionStorage.clear();
 };
 
-export const storeUserData = (username: string, role: string) => {
+export const storeUserData = (username: string, userId: string, role: string) => {
   sessionStorage.setItem("username", username);
+  sessionStorage.setItem("userId", userId);
   sessionStorage.setItem("role", role);
 };
 
