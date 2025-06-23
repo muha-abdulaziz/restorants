@@ -19,6 +19,7 @@ import MenuPage from "../pages/restaurant/MenuPage";
 import MealsPage from "../pages/restaurant/MealsPage";
 import OrdersPage from '../pages/restaurant/OrdersPage';
 import { OwnerProfilePage } from "../pages/restaurant/OwnerProfilePage";
+import OrderDetailsPage from '../pages/restaurant/OrderDetailsPage';
 
 export const appRoutes = createBrowserRouter([
   {
@@ -132,6 +133,14 @@ export const appRoutes = createBrowserRouter([
         element: (
           <PrivateRouter roles={[UserRole.RESTAURANT_OWNER]}>
             <OrdersPage />
+          </PrivateRouter>
+        ),
+      },
+      {
+        path: "restaurant/:restaurantId/orders/:orderId",
+        element: (
+          <PrivateRouter roles={[UserRole.RESTAURANT_OWNER]}>
+            <OrderDetailsPage />
           </PrivateRouter>
         ),
       },

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { getRestaurantOrders, updateOrderStatus } from '../../api/restaurant.api';
 
 const ORDER_STATUSES = [
@@ -92,6 +92,12 @@ const OrdersPage = () => {
                   <td className="border px-2 py-1">{order.createdAt?.slice(0, 19).replace('T', ' ')}</td>
                   <td className="border px-2 py-1">
                     {updatingId === order.id && <span>Updating...</span>}
+                    <Link
+                      to={`/restaurant/${restaurantId}/orders/${order.id}`}
+                      className="ml-2 text-blue-600 underline"
+                    >
+                      Details
+                    </Link>
                   </td>
                 </tr>
               ))}

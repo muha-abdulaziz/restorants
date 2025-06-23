@@ -28,7 +28,7 @@ export class RestaurantService {
     async getOrdersByRestaurant(restaurantId: number, page = 1, pageSize = 10) {
       const [orders, total] = await this.orderRepo.findAndCount({
         where: { restaurant: { id: restaurantId } },
-        relations: ['customer', 'meals', 'meals.menu'],
+        relations: ['customer', 'customer.user', 'meals', 'meals.menu'],
         order: { createdAt: 'DESC' },
         skip: (page - 1) * pageSize,
         take: pageSize,
@@ -61,5 +61,12 @@ export class RestaurantService {
   
       await this.restaurantRepo.update(restaurant.id, updateRestaurantDto);
       return this.findRestaurantByOwnerId(userId);
+    }
+
+    async getOrderById(restaurantId: number, orderId: number) {
+      return this.orderRepo.findOne({
+        where: { id: orderId, restaurant: { id: restaurantId } },
+        relations: ['customer', 'customer.user', 'meals', 'meals.menu'],
+      });
     }
 }

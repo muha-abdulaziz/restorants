@@ -28,4 +28,7 @@ export const updateOrderStatus = (restaurantId: string | number, orderId: string
 
 export const getRestaurantProfile = () => httpGet('/restaurants/profile/mine');
 
-export const updateRestaurantProfile = (data: any) => httpPatch('/restaurants/profile/mine', data); 
+export const updateRestaurantProfile = (data: any) => httpPatch('/restaurants/profile/mine', data);
+
+export const getOrderById = (restaurantId: string | number, orderId: string | number) =>
+  httpGet(`/restaurants/${restaurantId}/orders/${orderId}`); 

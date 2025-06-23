@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Query, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Query, UseGuards, Request, NotFoundException } from '@nestjs/common';
 import { RestaurantService } from './restaurant.service';
 import { MenuService } from './menu.service';
 import { CreateMenuDto } from './dto/create-menu.dto';
@@ -207,6 +207,22 @@ export class RestaurantController {
     return {
       success: true,
       message: 'Order status updated successfully',
+      data: order,
+    };
+  }
+
+  @Get(':restaurantId/orders/:orderId')
+  async getOrderById(
+    @Param('restaurantId', ParseIntPipe) restaurantId: number,
+    @Param('orderId', ParseIntPipe) orderId: number,
+  ): Promise<ApiResponse<any>> {
+    const order = await this.restaurantService.getOrderById(restaurantId, orderId);
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+    return {
+      success: true,
+      message: 'Order retrieved successfully',
       data: order,
     };
   }
