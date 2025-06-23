@@ -3,11 +3,10 @@ import { useParams, Link } from 'react-router-dom';
 import { getRestaurantOrders, updateOrderStatus } from '../../api/restaurant.api';
 
 const ORDER_STATUSES = [
-  'PENDING',
-  'PREPARED',
-  'ON_DELIVERY',
-  'DELIVERED',
-  'CANCELLED',
+  "ACCEPTED",
+  "PREPARED",
+  "ON_DELIVERY",
+  "REJECTED"
 ];
 
 const PAGE_SIZE = 10;

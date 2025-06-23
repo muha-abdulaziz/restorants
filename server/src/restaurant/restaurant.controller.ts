@@ -16,6 +16,8 @@ import { RolesGuard } from 'src/SecurityUtils/roles.guard';
 import { Roles } from 'src/SecurityUtils/role.decorator';
 import { UserRole } from 'src/user/user-role.enum';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
+import { UpdateOrderStatusDto } from './dto/update-order-status.dto';
+import { ValidationPipe } from '@nestjs/common';
 
 @Controller('restaurants')
 export class RestaurantController {
@@ -201,9 +203,9 @@ export class RestaurantController {
   async updateOrderStatus(
     @Param('restaurantId', ParseIntPipe) restaurantId: number,
     @Param('orderId', ParseIntPipe) orderId: number,
-    @Body('status') status: OrderStatus,
+    @Body(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true })) updateOrderStatusDto: UpdateOrderStatusDto,
   ): Promise<ApiResponse<any>> {
-    const order = await this.restaurantService.updateOrderStatus(restaurantId, orderId, status);
+    const order = await this.restaurantService.updateOrderStatus(restaurantId, orderId, updateOrderStatusDto.status as OrderStatus);
     return {
       success: true,
       message: 'Order status updated successfully',
