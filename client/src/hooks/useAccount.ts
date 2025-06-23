@@ -5,6 +5,7 @@ import {
   removeToken,
   storeToken,
   storeUserData,
+  storeRestauranData,
 } from "../helpers/auth";
 import { useEffect, useState } from "react";
 
@@ -18,6 +19,7 @@ export const useUserAccount = () => {
       storeToken(access_token);
       storeUserData(username, userId, role);
       if (role === 'RESTAURANT_OWNER') {
+        storeRestauranData(restaurantId);
         navigate(`/restaurant/${restaurantId || userId}/menus`, { replace: true });
       } else {
         navigate("/", { replace: true });

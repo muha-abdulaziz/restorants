@@ -26,10 +26,18 @@ export const storeUserData = (username: string, userId: string, role: string) =>
   sessionStorage.setItem("role", role);
 };
 
+export const storeRestauranData = (restaurantId: string) => {
+  sessionStorage.setItem("restaurantId", restaurantId)
+};
+
 export const getRole = () => {
   return sessionStorage.getItem("role");
 };
 
 export const getUserId = () => {
   return sessionStorage.getItem("userId");
+};
+
+export const getRestaurantId = () => {
+  return sessionStorage.getItem("restaurantId");
 };

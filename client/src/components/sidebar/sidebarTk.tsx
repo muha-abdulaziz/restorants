@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getRole, getUserId } from "../../helpers/auth";
+import { getRole, getRestaurantId } from "../../helpers/auth";
 import { UserRole } from "../../common/types/enum";
 import { Link } from "react-router-dom";
 import { getRestaurantProfile } from "../../api/restaurant.api";
@@ -32,7 +32,7 @@ export function SideBar() {
     if (role === UserRole.RESTAURANT_OWNER) {
       // Fetch restaurant id for owner
       getRestaurantProfile().then((res: any) => {
-        const id = res?.data?.id || getUserId();
+        const id = res?.data?.id || getRestaurantId();
         setRestaurantId(id);
         setItems(
           restaurantOwnerBase.map((item) => ({
