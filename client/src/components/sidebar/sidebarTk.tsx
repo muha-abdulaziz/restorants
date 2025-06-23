@@ -20,6 +20,7 @@ const restaurantOwnerBase = [
   { name: "Menu Management", route: "/restaurant/{id}/menus" },
   { name: "Meals Management", route: "/restaurant/{id}/meals" },
   { name: "Orders Management", route: "/restaurant/{id}/orders" },
+  { name: "Dashboard", route: "/restaurant/{id}/dashboard" },
 ];
 
 export function SideBar() {

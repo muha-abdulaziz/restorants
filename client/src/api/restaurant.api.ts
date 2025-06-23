@@ -31,4 +31,13 @@ export const getRestaurantProfile = () => httpGet('/restaurants/profile/mine');
 export const updateRestaurantProfile = (data: any) => httpPatch('/restaurants/profile/mine', data);
 
 export const getOrderById = (restaurantId: string | number, orderId: string | number) =>
-  httpGet(`/restaurants/${restaurantId}/orders/${orderId}`); 
+  httpGet(`/restaurants/${restaurantId}/orders/${orderId}`);
+
+export const getRestaurantStatistics = (restaurantId: string | number, from?: string, to?: string) => {
+  let url = `/restaurants/${restaurantId}/statistics`;
+  const params = [];
+  if (from) params.push(`from=${encodeURIComponent(from)}`);
+  if (to) params.push(`to=${encodeURIComponent(to)}`);
+  if (params.length) url += `?${params.join('&')}`;
+  return httpGet(url);
+}; 

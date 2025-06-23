@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { OrderStatus } from '../order/order-status.enum-';
 import { OwnerRestaurantService } from 'src/owner-restaurant/owner-restaurant.service';
 import { UpdateRestaurantDto } from './dto/update-restaurant.dto';
+import { Between } from 'typeorm';
 
 @Injectable()
 export class RestaurantService {
@@ -68,5 +69,63 @@ export class RestaurantService {
         where: { id: orderId, restaurant: { id: restaurantId } },
         relations: ['customer', 'customer.user', 'meals', 'meals.menu'],
       });
+    }
+
+    async getStatistics(restaurantId: number, from?: string, to?: string) {
+      console.log("from ->", from);
+      console.log("to ->", to);
+      if (from && to && new Date(from) > new Date(to)) {
+        [from, to] = [to, from];
+      }
+      let dateFilter = {};
+      if (from && to) {
+        dateFilter = { createdAt: Between(new Date(from), new Date(to + 'T23:59:59.999Z')) };
+      } else if (from) {
+        dateFilter = { createdAt: Between(new Date(from), new Date(from + 'T23:59:59.999Z')) };
+      } else if (to) {
+        dateFilter = { createdAt: Between(new Date(to), new Date(to + 'T23:59:59.999Z')) };
+      }
+
+      const totalOrders = await this.orderRepo.count({ where: { restaurant: { id: restaurantId }, ...dateFilter } });
+
+      const deliveredOrders = await this.orderRepo.find({
+        where: { restaurant: { id: restaurantId }, status: OrderStatus.DELIVERED, ...dateFilter },
+        relations: ['meals'],
+      });
+      let totalRevenue = 0;
+      for (const order of deliveredOrders) {
+        for (const meal of order.meals) {
+          totalRevenue += Number(meal.price);
+        }
+      }
+
+      const activeMenus = await this.restaurantRepo.manager.getRepository('Menu').count({
+        where: { restaurant: { id: restaurantId }, isActive: true },
+      });
+
+      const totalMeals = await this.restaurantRepo.manager.getRepository('Meal').count({
+        where: { menu: { restaurant: { id: restaurantId } } },
+      });
+
+      const statusCountsRaw = await this.orderRepo
+        .createQueryBuilder('order')
+        .select('order.status', 'status')
+        .addSelect('COUNT(*)', 'count')
+        .where('order.restaurantId = :restaurantId', { restaurantId })
+        .andWhere(from || to ? 'order.createdAt BETWEEN :from AND :to' : '1=1', from || to ? { from: from ? new Date(from) : new Date(0), to: to ? new Date(to + 'T23:59:59.999Z') : new Date() } : {})
+        .groupBy('order.status')
+        .getRawMany();
+      const orderStatusCounts: Record<string, number> = {};
+      statusCountsRaw.forEach((row: any) => {
+        orderStatusCounts[row.status] = Number(row.count);
+      });
+
+      return {
+        totalOrders,
+        totalRevenue,
+        activeMenus,
+        totalMeals,
+        orderStatusCounts,
+      };
     }
 }

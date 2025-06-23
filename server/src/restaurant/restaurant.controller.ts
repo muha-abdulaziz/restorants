@@ -226,4 +226,18 @@ export class RestaurantController {
       data: order,
     };
   }
+
+  @Get(':restaurantId/statistics')
+  async getStatistics(
+    @Param('restaurantId', ParseIntPipe) restaurantId: number,
+    @Query('from') from?: string,
+    @Query('to') to?: string,
+  ) {
+    const stats = await this.restaurantService.getStatistics(restaurantId, from, to);
+    return {
+      success: true,
+      message: 'Statistics retrieved successfully',
+      data: stats,
+    };
+  }
 }
